@@ -2,13 +2,14 @@
 import numpy as np
 import cv2
 import time
-import subprocess
+import os
 #Initializing the face and eye cascade classifiers from xml files
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('haarcascade_eye_tree_eyeglasses.xml')
 
 #Variable store execution state
 first_read = True
+
 
 #Starting the video capture
 cap = cv2.VideoCapture(0)
@@ -41,27 +42,26 @@ while(ret):
             if(len(eyes)>=2):
                 eyes_t=time.time()
                 #Check if program is running for detection 
-                if(first_read):
-                    cv2.putText(img, "Eye detected press s to begin", (70,70), cv2.FONT_HERSHEY_PLAIN, 3,(0,255,0),2)
-                else:
-                    cv2.putText(img, "Eyes open!", (70,70), cv2.FONT_HERSHEY_PLAIN, 2,(255,255,255),2)
+                
+                cv2.putText(img, "Goz Acik", (70,70), cv2.FONT_HERSHEY_PLAIN, 2,(255,255,255),2)
             else:
                 eyes_end_time=time.time()
                 eyes_two_minutes=eyes_end_time-eyes_t
-                cv2.putText(img, f"Eyes close in {eyes_two_minutes}", (70,70), cv2.FONT_HERSHEY_PLAIN, 2,(255,255,255),2)
+                cv2.putText(img, f"goz kapali in {int(eyes_two_minutes)} 60 saniye içinde bilgisayar kapatilacak", (70,70), cv2.FONT_HERSHEY_PLAIN, 2,(255,255,255),2)
                 
                 if(eyes_two_minutes>60):
-                    print("göz için kapatttt")
+                    os.system("shutdown /s /t 1")
+                    
                 
                
             
     else:
             face_end_time=time.time()
             face_two_minutes=face_end_time-face_t
-            cv2.putText(img, f"Eyes close in {face_two_minutes}", (70,70), cv2.FONT_HERSHEY_PLAIN, 2,(255,255,255),2)
+            cv2.putText(img, f"Yuz algilanmadi {int(face_two_minutes)} 60 saniye içinde bilgisayar kapatilacak", (70,70), cv2.FONT_HERSHEY_PLAIN, 2,(255,255,255),2)
             
             if(face_two_minutes>60):
-                print("yüz için kapatttt")
+                os.system("shutdown /s /t 1")
         
 
     #Controlling the algorithm with keys
